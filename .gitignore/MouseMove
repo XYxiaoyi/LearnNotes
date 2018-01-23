@@ -1,0 +1,21 @@
+public class MouseMove : MonoBehaviour {
+    public Transform TargetTrans;
+    void Update()
+    {
+        StartCoroutine(OnMouseDown());
+    }
+    IEnumerator OnMouseDown()
+    {
+        Vector3 screenSpace = Camera.main.WorldToScreenPoint(TargetTrans.position);
+        
+        Vector3 offset = TargetTrans.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenSpace.z));      
+        while (Input.GetMouseButton(2))//Input.GetMouseButton(0)
+        {
+          
+            Vector3 curScreenSpace = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenSpace.z);
+            Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenSpace) + offset;
+            TargetTrans.position = curPosition;           
+            yield return new WaitForFixedUpdate(); 
+        }
+    }
+}
